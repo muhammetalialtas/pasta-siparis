@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pasta Sipariş Formu</title>
+<style>
+  body{font-family:system-ui,Segoe UI,Arial;background:#fff0f5;margin:0;padding:24px;color:#4b2e2e}
+  h1{text-align:center;color:#d94f70}
+  form{max-width:860px;margin:auto;background:#fff;padding:24px;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.08)}
+  label{display:block;margin-top:16px;font-weight:600}
+  input,textarea{width:100%;padding:10px;margin-top:6px;border:1px solid #ddd;border-radius:10px;background:#fffafc}
+  .radio-group,.checkbox-group{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+  .radio-group label,.checkbox-group label{background:#ffe0ec;padding:10px 12px;border-radius:10px;cursor:pointer}
+  .image-upload{margin-top:14px;background:#fff5f8;padding:12px;border:1px dashed #d48ca6;border-radius:12px}
+  button{margin-top:18px;background:#ff6f91;border:none;color:#fff;padding:12px 22px;border-radius:24px;cursor:pointer}
+  #popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#e8f5e9;color:#2e7d32;padding:24px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.2);display:none;z-index:1000;text-align:center;max-width:92%}
+  #popup strong{display:block;font-size:1.4em;margin-bottom:8px}
+  #close{margin-top:10px;background:#c8e6c9;border:none;padding:8px 14px;border-radius:10px;cursor:pointer}
+</style>
+</head>
+<body>
+<h1>🎂 Pasta Sipariş Formu</h1>
+
+<form id="form" enctype="multipart/form-data">
+  <label>Adı Soyadı</label>
+  <input type="text" name="adsoyad" id="adsoyad" required pattern="[A-Za-zÇçĞğİıÖöŞşÜü\\s]+" title="Lütfen sadece harf giriniz.">
+
+  <label>Cep Telefon Numarası</label>
+  <input type="tel" name="telefon" id="telefon" required pattern="[0-9]{10,11}" title="Lütfen geçerli bir telefon numarası giriniz.">
+
+  <label>Kaç Kişilik Pasta</label>
+  <div class="radio-group">
+    <label><input type="radio" name="kisi" value="0 nolu yuvarlak (4-5 kişilik)">0 nolu yuvarlak (4-5 kişilik)</label>
+    <label><input type="radio" name="kisi" value="1 nolu yuvarlak (6-8 kişilik)">1 nolu yuvarlak (6-8 kişilik)</label>
+    <label><input type="radio" name="kisi" value="2 nolu yuvarlak (9-12 kişilik)">2 nolu yuvarlak (9-12 kişilik)</label>
+    <label><input type="radio" name="kisi" value="3 nolu yuvarlak (13-18 kişilik)">3 nolu yuvarlak (13-18 kişilik)</label>
+    <label><input type="radio" name="kisi" value="4 nolu yuvarlak (19-23 kişilik)">4 nolu yuvarlak (19-23 kişilik)</label>
+    <label><input type="radio" name="kisi" value="Yarım tepsi dikdörtgen (24-35 kişilik)">Yarım tepsi dikdörtgen (24-35 kişilik)</label>
+    <label><input type="radio" name="kisi" value="Tam tepsi dikdörtgen (36-46 kişilik)">Tam tepsi dikdörtgen (36-46 kişilik)</label>
+  </div>
+
+  <label>Pastanın İçi</label>
+  <div class="checkbox-group">
+    <label><input type="checkbox" name="ici" value="Çikolata">Çikolata</label>
+    <label><input type="checkbox" name="ici" value="Çilek">Çilek</label>
+    <label><input type="checkbox" name="ici" value="Muz">Muz</label>
+    <label><input type="checkbox" name="ici" value="Orman Meyveleri">Orman Meyveleri</label>
+  </div>
+
+  <label>Hazırlanacağı Gün</label>
+  <input type="date" name="tarih" required>
+
+  <label>Hazırlanacağı Saat</label>
+  <input type="time" name="saat" required>
+
+  <div class="image-upload">
+    <label>1. Görsel</label>
+    <input type="file" name="resim1" accept="image/*">
+    <textarea name="aciklama1" placeholder="Bu görsel için açıklama..."></textarea>
+  </div>
+  <div class="image-upload">
+    <label>2. Görsel (Varsa)</label>
+    <input type="file" name="resim2" accept="image/*">
+    <textarea name="aciklama2" placeholder="Bu görsel için açıklama..."></textarea>
+  </div>
+  <div class="image-upload">
+    <label>3. Görsel (Varsa)</label>
+    <input type="file" name="resim3" accept="image/*">
+    <textarea name="aciklama3" placeholder="Bu görsel için açıklama..."></textarea>
+  </div>
+
+  <button type="submit">Siparişi Kaydet</button>
+</form>
+
+<div id="popup">
+  <strong id="orderNo"></strong>
+  ✅ Siparişiniz başarıyla alınmıştır.<br>
+  Onaylandığı zaman size dönüş yapılacaktır.<br>
+  <em>0–1 saat içerisinde dönüş olmazsa lütfen bizimle iletişime geçiniz.</em><br>
+  <button id="close">Kapat</button>
+</div>
+
+<script>
+  // Girdi doğrulama
+  document.getElementById('adsoyad').addEventListener('input', e => {
+    e.target.value = e.target.value.replace(/[^A-Za-zÇçĞğİıÖöŞşÜü\\s]/g, '');
+  });
+  document.getElementById('telefon').addEventListener('input', e => {
+    e.target.value = e.target.value.replace(/\\D/g, '');
+  });
+
+  // Form gönder
+  const form = document.getElementById('form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const res = await fetch('/orders', { method: 'POST', body: fd });
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('orderNo').textContent = `Sipariş Numaranız: ${data.orderNumber}`;
+      document.getElementById('popup').style.display = 'block';
+      form.reset();
+    } else {
+      alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+    }
+  });
+
+  document.getElementById('close').addEventListener('click', () => {
+    document.getElementById('popup').style.display = 'none';
+  });
+</script>
+</body>
+</html>
