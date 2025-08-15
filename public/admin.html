@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Paneli</title>
+  <link rel="stylesheet" href="stil.css" />
+</head>
+<body>
+  <header>
+    <h1>🍰 Sipariş Yönetim Paneli</h1>
+    <nav><a href="index.html">Müşteri Formu</a></nav>
+  </header>
+
+  <section class="panel">
+    <label>Admin Anahtarı:
+      <input id="key" type="password" placeholder="x-admin-key" />
+    </label>
+    <button id="btnLoad">📋 Siparişleri Listele</button>
+  </section>
+
+  <section id="orders" class="orders"></section>
+
+  <script src="script.js"></script>
+</body>
+</html>

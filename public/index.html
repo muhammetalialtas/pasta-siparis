@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pasta Sipariş Formu</title>
+  <link rel="stylesheet" href="stil.css" />
+</head>
+<body>
+  <header>
+    <h1>🎂 Özel Pasta Siparişi</h1>
+    <nav><a href="admin.html">Admin Paneli</a></nav>
+  </header>
+
+  <form id="orderForm" class="form">
+    <label>Ad Soyad
+      <input type="text" id="name" required />
+    </label>
+
+    <label>Pasta Türü
+      <select id="cake" required>
+        <option value="">Seçiniz</option>
+        <option>Çikolatalı</option>
+        <option>Meyveli</option>
+        <option>Red Velvet</option>
+        <option>Cheesecake</option>
+      </select>
+    </label>
+
+    <label>Referans Görsel (opsiyonel)
+      <input type="file" id="cakeImage" accept="image/*" />
+    </label>
+
+    <button type="submit">Sipariş Ver</button>
+    <p id="orderMsg" class="msg"></p>
+  </form>
+
+  <script src="script.js"></script>
+</body>
+</html>
