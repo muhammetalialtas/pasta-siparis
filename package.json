@@ -1,13 +1,13 @@
 {
   "name": "cake-orders",
   "version": "1.0.0",
+  "description": "Cake order tracking app",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'No build step needed'"
+  },
   "dependencies": {
-    "airtable": "^0.12.1"
+    "airtable": "^0.12.1",
+    "googleapis": "^118.0.0"
   }
-"dependencies": {
-  "googleapis": "^118.0.0"
 }
-
-}
-
-
