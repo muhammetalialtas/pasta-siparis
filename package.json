@@ -1,13 +1,7 @@
 {
-  "name": "cake-order-app",
+  "name": "cake-orders",
   "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "build": "echo \"No build step\"",
-    "dev": "npx serve ."
-  },
   "dependencies": {
-    "cloudinary": "^1.41.3",
-    "googleapis": "^132.0.0"
+    "airtable": "^0.12.1"
   }
 }
