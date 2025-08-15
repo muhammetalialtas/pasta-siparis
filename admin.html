@@ -1,80 +1,20 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Admin - Siparişler</title>
-<style>
-  body{font-family:system-ui,Segoe UI,Arial;background:#fafafa;margin:0;padding:24px}
-  h1{margin:0 0 16px}
-  #key{padding:8px;border:1px solid #ccc;border-radius:8px}
-  .order{background:#fff;border:1px solid #eee;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.05);padding:16px;margin-bottom:12px}
-  .imgs img{max-width:160px;border-radius:8px;margin-right:8px;margin-top:8px}
-  .actions button{margin-right:8px;padding:8px 12px;border:none;border-radius:8px;cursor:pointer}
-  .ok{background:#2e7d32;color:#fff}
-  .no{background:#c62828;color:#fff}
-</style>
+  <meta charset="UTF-8" />
+  <title>Admin Paneli</title>
+  <link rel="stylesheet" href="stil.css" />
 </head>
 <body>
-<h1>Admin - Bekleyen Siparişler</h1>
-<label>Admin Anahtarı: <input id="key" type="password" placeholder="x-admin-key"/></label>
-<button id="load">Yenile</button>
-<div id="list"></div>
+  <h1>🍰 Sipariş Yönetim Paneli</h1>
 
-<script>
-  const list = document.getElementById('list');
-  const keyInput = document.getElementById('key');
-  document.getElementById('load').addEventListener('click', load);
+  <label>Admin Anahtarı:
+    <input id="key" type="password" placeholder="x-admin-key" />
+  </label>
+  <button onclick="loadOrders()">📋 Siparişleri Listele</button>
 
-  async function load(){
-    list.innerHTML = 'Yükleniyor...';
-    const res = await fetch('/admin/orders?status=pending', {
-      headers: {'x-admin-key': keyInput.value}
-    });
-    if (!res.ok) return list.innerHTML = 'Yetkisiz veya hata.';
-    const data = await res.json();
-    list.innerHTML = '';
-    data.items.forEach(o => {
-      const div = document.createElement('div');
-      div.className = 'order';
-      div.innerHTML = `
-        <strong>${o.orderNumber}</strong> — ${new Date(o.createdAt).toLocaleString()}<br>
-        <b>Müşteri:</b> ${o.customer.name} | ${o.customer.phone}<br>
-        <b>Boyut:</b> ${o.size || '-'}<br>
-        <b>İç:</b> ${(o.fillings||[]).join(', ') || '-'}<br>
-        <b>Teslim:</b> ${o.delivery?.date || '-'} ${o.delivery?.time || ''}<br>
-        <div class="imgs">${(o.images||[]).map(img => img.url ? `<img src="${img.url}" alt="">` : '').join('')}</div>
-        <div class="actions" style="margin-top:10px;">
-          <button class="ok" data-id="${o.id}">Onayla (Notion)</button>
-          <button class="no" data-id="${o.id}">Reddet (Çöp)</button>
-        </div>
-      `;
-      list.appendChild(div);
-    });
+  <div id="orders"></div>
 
-    document.querySelectorAll('.ok').forEach(btn => btn.addEventListener('click', () => approve(btn.dataset.id)));
-    document.querySelectorAll('.no').forEach(btn => btn.addEventListener('click', () => reject(btn.dataset.id)));
-  }
-
-  async function approve(id){
-    if (!confirm('Bu sipariş Notion’a gönderilecek ve onaylanacak. Emin misiniz?')) return;
-    const res = await fetch(`/admin/orders/${id}/approve`, {
-      method: 'POST',
-      headers: {'x-admin-key': keyInput.value}
-    });
-    if (res.ok) { alert('Onaylandı ve Notion’a gönderildi.'); load(); }
-    else alert('Hata: Onaylanamadı.');
-  }
-
-  async function reject(id){
-    if (!confirm('Sipariş reddedilecek ve çöpe gidecek. Emin misiniz?')) return;
-    const res = await fetch(`/admin/orders/${id}/reject`, {
-      method: 'POST',
-      headers: {'x-admin-key': keyInput.value}
-    });
-    if (res.ok) { alert('Reddedildi (Çöp).'); load(); }
-    else alert('Hata: Reddedilemedi.');
-  }
-</script>
+  <script src="script.js"></script>
 </body>
 </html>
